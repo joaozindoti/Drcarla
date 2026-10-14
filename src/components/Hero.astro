@@ -1,0 +1,210 @@
+---
+import { Picture } from "astro:assets";
+import CtaButton from "./CtaButton.astro";
+import Icon from "./Icon.astro";
+import Sticker from "./Sticker.astro";
+import heroImg from "../assets/img/hero-estudio.jpg";
+import { heroVideo, temHeroVideo } from "../config/video";
+import { SITE } from "../config/site";
+---
+
+<section id="topo" class="hero relative overflow-hidden bg-sky">
+  <div
+    class="wrap grid grid-cols-1 items-center gap-y-10 pt-[5.75rem] pb-12 md:pt-28 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-x-12 lg:pt-28 lg:pb-16 xl:gap-x-20"
+  >
+    <!-- Texto -->
+    <div class="hero-copy relative">
+      <h1 class="display hero-h1">
+        <span class="hero-line" style="--i:0">Seu sorriso,</span>
+        <span class="hero-line" style="--i:1">do seu jeito.</span>
+      </h1>
+
+      <Sticker icon="tooth" color="mint" size={4.6} rotate={12} class="hero-pop st-tooth absolute max-lg:hidden" style="--i:0" />
+      <Sticker icon="sparkle" color="lavender" shape="circle" size={3.4} rotate={-14} class="hero-pop st-sparkle absolute max-lg:hidden" style="--i:2" />
+
+      <p class="hero-fade mt-6 max-w-[31rem] text-[1.08rem] leading-[1.45] md:mt-8 md:text-[1.25rem]" style="--i:0">
+        Ortodontia, facetas em resina e clínica geral em Santa Inês. Nove anos cuidando de sorrisos com naturalidade.
+      </p>
+      <div class="hero-fade mt-6 flex flex-wrap items-center gap-3 md:mt-8" style="--i:1">
+        <CtaButton id="cta-hero" />
+        <a href="#transformacoes" class="btn-line">
+          Ver antes e depois
+          <Icon name="arrowDown" class="size-[1.1rem]" />
+        </a>
+      </div>
+    </div>
+
+    <!-- Vídeo dela num card arredondado (a foto de estúdio fica por baixo até o vídeo tocar) -->
+    <div class="hero-fade relative mx-auto w-full max-w-[26rem] lg:mx-0 lg:w-[clamp(18.5rem,25vw,23rem)]" style="--i:2">
+      <div class="media relative overflow-hidden border border-line bg-paper" data-hero-media>
+        <Picture
+          src={heroImg}
+          formats={["avif", "webp"]}
+          widths={[360, 480, 640, 800]}
+          sizes="(min-width: 1024px) 23rem, min(92vw, 26rem)"
+          alt="Dra. Carla Furtado sorrindo, de jaleco azul, com a mão apoiada no queixo"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          class="absolute inset-0 h-full w-full object-cover object-[50%_22%]"
+        />
+        {
+          temHeroVideo && (
+            <video
+              class="hero-video absolute inset-0 h-full w-full object-cover object-[50%_45%] opacity-0"
+              muted
+              playsinline
+              loop
+              preload="none"
+              aria-describedby="hero-video-transcricao"
+              data-hero-video
+            >
+              {heroVideo.webm && <source data-src={heroVideo.webm} type="video/webm" />}
+              {heroVideo.mp4 && <source data-src={heroVideo.mp4} type="video/mp4" />}
+            </video>
+          )
+        }
+        {
+          temHeroVideo && (
+            <div class="absolute inset-x-3 bottom-3 z-[1] flex md:inset-x-4 md:bottom-4">
+              <button type="button" class="audio-btn" aria-pressed="false" data-hero-audio>
+                <span class="audio-ico grid size-9 place-items-center rounded-full bg-ink text-paper">
+                  <Icon name="speaker" class="audio-ico-on size-[1.1rem]" />
+                  <Icon name="speakerOff" class="audio-ico-off hidden size-[1.1rem]" />
+                </span>
+                <span data-hero-audio-label>Ouvir a Dra. Carla</span>
+              </button>
+            </div>
+          )
+        }
+      </div>
+      {
+        temHeroVideo && (
+          <p id="hero-video-transcricao" class="sr-only">
+            Vídeo de apresentação. A Dra. Carla diz: Olá! Você que está chegando agora por aqui, me chamo Dra. Carla
+            Furtado, formada pela Universidade Federal do Maranhão, pós-graduada em ortodontia, atuo na área da
+            odontologia estética e tratamento ortodôntico, atendimento tanto adulto quanto infantil. Agora que você já me
+            conhece, que tal dar o próximo passo para cuidar do seu sorriso?
+          </p>
+        )
+      }
+
+      <!-- Nota real do Google, como adesivo -->
+      <Sticker
+        color="sun"
+        shape="circle"
+        size={6.9}
+        rotate={-10}
+        class="hero-pop st-nota absolute z-[2] flex-col"
+        style="--i:1"
+        label={`Nota ${SITE.google.nota} no Google, com ${SITE.google.total} avaliações`}
+      >
+        <span class="font-display text-[2.6rem] leading-[0.8] font-extrabold">{SITE.google.nota}</span>
+        <span class="mt-1 flex gap-[1px]">
+          {Array.from({ length: 5 }).map(() => <Icon name="star" class="size-[0.72rem]" />)}
+        </span>
+      </Sticker>
+      <Sticker icon="heart" color="ember" shape="circle" size={3.9} rotate={8} class="hero-pop st-heart absolute z-[2]" style="--i:3" />
+      <!-- No celular o display ocupa a largura toda: os adesivos do texto vêm para a volta do vídeo. -->
+      <Sticker icon="tooth" color="mint" size={4.2} rotate={-10} class="hero-pop absolute -top-5 left-6 z-[2] lg:hidden" style="--i:0" />
+      <Sticker icon="sparkle" color="lavender" shape="circle" size={3.2} rotate={14} class="hero-pop absolute right-5 bottom-24 z-[2] lg:hidden" style="--i:2" />
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Display enorme: a fonte acompanha a largura da coluna (container query), então nunca quebra palavra.
+     "SEU SORRISO," mede ~4,13em nesta fonte (18cqi x 4,13 = ~74% da coluna; reduzido a pedido do dono). */
+  .hero-copy {
+    container-type: inline-size;
+  }
+  .hero-h1 {
+    font-size: min(18cqi, 9.9rem);
+    line-height: 0.8;
+    margin-left: -0.03em;
+  }
+
+  .media {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-media);
+  }
+  @media (min-width: 1024px) {
+    .media {
+      aspect-ratio: 9 / 14;
+    }
+  }
+
+  /* Adesivos em volta do display e do vídeo (posições à mão, nunca em grade). */
+  .hero :global(.st-nota) {
+    right: -0.6rem;
+    top: -1.6rem;
+  }
+  .hero :global(.st-heart) {
+    left: -0.8rem;
+    top: 38%;
+  }
+  @media (min-width: 1024px) {
+    .hero :global(.st-tooth) {
+      right: auto;
+      left: calc(min(18cqi, 9.9rem) * 4.05);
+      top: -0.5rem;
+    }
+    .hero :global(.st-sparkle) {
+      right: auto;
+      left: calc(min(18cqi, 9.9rem) * 4.2);
+      top: calc(min(18cqi, 9.9rem) * 0.92);
+    }
+    .hero :global(.st-nota) {
+      right: auto;
+      left: -3.4rem;
+      top: 2.5rem;
+    }
+    .hero :global(.st-heart) {
+      left: auto;
+      right: -1.4rem;
+      bottom: 7rem;
+    }
+  }
+
+  .hero-video {
+    transition: opacity 0.8s var(--ease-out-soft);
+  }
+  .hero-video[data-on] {
+    opacity: 1;
+  }
+
+  .audio-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 3rem;
+    padding: 0 1.1rem 0 0.35rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper);
+    font-size: 0.95rem;
+    font-weight: 700;
+    white-space: nowrap;
+    transition:
+      transform 0.2s var(--ease-out-soft),
+      background-color 0.2s;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .audio-btn:hover {
+      background: var(--color-sun);
+      transform: translateY(-2px);
+    }
+  }
+  .audio-btn:active {
+    transform: scale(0.97);
+  }
+  .audio-btn[aria-pressed="true"] {
+    background: var(--color-sun);
+  }
+  .audio-btn[aria-pressed="true"] :global(.audio-ico-on) {
+    display: none;
+  }
+  .audio-btn[aria-pressed="true"] :global(.audio-ico-off) {
+    display: block;
+  }
+</style>

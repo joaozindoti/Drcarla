@@ -1,0 +1,83 @@
+---
+import CtaButton from "./CtaButton.astro";
+import Icon from "./Icon.astro";
+import { SITE, MAPA_EMBED, MAPA_ROTA } from "../config/site";
+---
+
+<section id="contato" class="band bg-concrete" aria-labelledby="contato-titulo">
+  <div class="wrap">
+    <h2 id="contato-titulo" class="h-section">Vamos conversar?</h2>
+
+    <div class="mt-8 grid gap-3.5 md:mt-10 md:gap-4 lg:grid-cols-12">
+      <!-- Endereço, horário e a chamada -->
+      <div class="info card flex flex-col gap-7 bg-paper p-6 md:p-8 lg:order-2 lg:col-span-5">
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+          <div>
+            <p class="flex items-center gap-2.5 font-bold">
+              <span class="chip-icon size-10 bg-sun" style="--r:-6deg"><Icon name="mapPin" class="size-5" /></span>
+              Endereço
+            </p>
+            <p class="mt-3">
+              {SITE.endereco.rua}<br />
+              {SITE.endereco.bairro}, {SITE.endereco.cidade}-{SITE.endereco.uf}<br />
+              CEP {SITE.endereco.cep}
+            </p>
+          </div>
+          <div>
+            <p class="flex items-center gap-2.5 font-bold">
+              <span class="chip-icon size-10 bg-mint" style="--r:7deg"><Icon name="clock" class="size-5" /></span>
+              Horário
+            </p>
+            <ul class="mt-3">
+              {
+                SITE.horario.map((h) => (
+                  <li>
+                    {h.dias}: <b>{h.horas}</b>
+                  </li>
+                ))
+              }
+              <li>{SITE.horarioComplemento}.</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="text-ink-soft">Um espaço que acolhe a comunidade LGBTQ+.</p>
+
+        <div class="mt-auto flex flex-col gap-2.5 sm:flex-row sm:flex-wrap lg:flex-col xl:flex-row">
+          <CtaButton size="lg" class="w-full sm:w-auto lg:w-full xl:w-auto" />
+          <a href={MAPA_ROTA} target="_blank" rel="noopener" class="btn-line btn-lg">
+            Como chegar
+            <Icon name="arrowUpRight" class="size-5" />
+            <span class="sr-only">(abre o Google Maps em nova aba)</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Mapa -->
+      <div class="map-card relative overflow-hidden border border-line bg-mist lg:order-1 lg:col-span-7">
+        <iframe
+          src={MAPA_EMBED}
+          title={`Mapa: ${SITE.endereco.rua}, ${SITE.endereco.bairro}, ${SITE.endereco.cidade}-${SITE.endereco.uf}`}
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+          class="absolute inset-0 h-full w-full border-0"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .map-card {
+    border-radius: var(--radius-media);
+    aspect-ratio: 4 / 3;
+  }
+  .info {
+    border-radius: var(--radius-media);
+  }
+  @media (min-width: 1024px) {
+    .map-card {
+      aspect-ratio: auto;
+      min-height: 30rem;
+    }
+  }
+</style>

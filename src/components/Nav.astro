@@ -1,0 +1,76 @@
+---
+import Selo from "./Selo.astro";
+import CtaButton from "./CtaButton.astro";
+import Icon from "./Icon.astro";
+import { SITE } from "../config/site";
+
+const links = [
+  { href: "#sobre", label: "Sobre" },
+  { href: "#transformacoes", label: "Antes e depois" },
+  { href: "#especialidades", label: "Especialidades" },
+  { href: "#avaliacoes", label: "Avaliações" },
+  { href: "#contato", label: "Contato" },
+];
+---
+
+<header class="absolute inset-x-0 top-0 z-10">
+  <nav class="wrap flex h-[4.5rem] items-center justify-between gap-6 md:h-20" aria-label="Principal">
+    <a href="#topo" class="flex items-center gap-3 rounded-full pr-2" aria-label="Dra. Carla Furtado, início">
+      <Selo />
+      <span class="flex flex-col leading-[1.1]">
+        <span class="text-[0.98rem] font-bold">{SITE.nome}</span>
+        <span class="text-[0.78rem] text-ink-soft">Odontologia Especializada</span>
+      </span>
+    </a>
+
+    <ul class="hidden items-center gap-2 xl:flex">
+      {
+        links.map((l) => (
+          <li>
+            <a href={l.href} class="nav-pill">
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="hidden lg:block">
+      <CtaButton class="!min-h-12" />
+    </div>
+
+    <a
+      href={SITE.instagramUrl}
+      target="_blank"
+      rel="noopener"
+      class="grid size-12 place-items-center rounded-full border border-line bg-paper lg:hidden"
+      aria-label="Instagram da Dra. Carla (abre em nova aba)"
+    >
+      <Icon name="instagram" class="size-[1.35rem]" />
+    </a>
+  </nav>
+</header>
+
+<style>
+  .nav-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0 1.1rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper);
+    font-size: 0.94rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    transition:
+      background-color 0.2s,
+      transform 0.2s var(--ease-out-soft);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .nav-pill:hover {
+      background: var(--color-sun);
+      transform: translateY(-2px);
+    }
+  }
+</style>

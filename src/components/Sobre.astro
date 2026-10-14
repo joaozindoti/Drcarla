@@ -1,0 +1,147 @@
+---
+import { Picture } from "astro:assets";
+import Icon from "./Icon.astro";
+import type { IconName } from "../config/icons";
+import sobreImg from "../assets/img/sobre-consultorio.jpg";
+import { SITE } from "../config/site";
+
+// Credenciais reais (design/BRIEF.md). Cada uma num card-adesivo de cor diferente.
+const creds: { valor: string; linha: string; icon: IconName; cor: string; cls: string; r: number }[] = [
+  { valor: `${SITE.anosExperiencia} anos`, linha: "de experiência cuidando de sorrisos.", icon: "sealCheck", cor: "sun", cls: "c-anos", r: -8 },
+  { valor: "Ortodontia", linha: "Pós-graduada na área.", icon: "smiley", cor: "lavender", cls: "c-orto", r: 6 },
+  { valor: "UFMA", linha: "Formada pela Universidade Federal do Maranhão.", icon: "graduation", cor: "mint", cls: "c-ufma", r: -5 },
+  { valor: SITE.cro, linha: "Cirurgiã-dentista.", icon: "badge", cor: "paper", cls: "c-cro", r: 7 },
+  {
+    valor: "Adultos e crianças",
+    linha: "Odontologia estética, ortodontia e clínica geral.",
+    icon: "users",
+    cor: "violet",
+    cls: "c-idades",
+    r: -6,
+  },
+];
+---
+
+<section id="sobre" class="band bg-paper" aria-labelledby="sobre-titulo">
+  <div class="wrap">
+    <h2 id="sobre-titulo" class="h-section max-w-[14ch] lg:max-w-none">Prazer, sou a Dra. Carla.</h2>
+
+    <div class="bento mt-8 grid gap-3.5 md:mt-10 md:gap-4">
+      <div class="b-foto relative overflow-hidden rounded-[var(--radius-card)] border border-line bg-mist">
+        <Picture
+          src={sobreImg}
+          formats={["avif", "webp"]}
+          widths={[360, 520, 720, 960]}
+          sizes="(min-width: 1440px) 30rem, (min-width: 1024px) 33vw, calc(100vw - 2rem)"
+          alt="Dra. Carla Furtado de jaleco branco, sentada à mesa do consultório, sorrindo"
+          loading="lazy"
+          decoding="async"
+          class="absolute inset-0 h-full w-full object-cover object-[50%_42%]"
+        />
+      </div>
+
+      <figure class="b-fala card flex flex-col justify-between gap-6 bg-sky p-6 md:p-8">
+        <blockquote>
+          <p class="text-[1.45rem] font-bold leading-[1.18] tracking-[-0.02em] md:text-[2rem] xl:text-[2.3rem]">
+            “Mais do que transformar sorrisos, escolhi transformar a forma como cada pessoa se sente ao sorrir.”
+          </p>
+        </blockquote>
+        <figcaption class="max-w-[36rem] text-ink-soft">
+          Para mim, um sorriso bonito é aquele que transmite quem você é, com leveza, segurança e autenticidade.
+        </figcaption>
+      </figure>
+
+      {
+        creds.map((c) => (
+          <div
+            class:list={["cred card flex flex-col justify-between gap-6 p-5 md:p-6", c.cls]}
+            style={`background:var(--soft-${c.cor})`}
+          >
+            <span class="chip-icon" style={`--r:${c.r}deg`}>
+              <Icon name={c.icon} class="size-6" />
+            </span>
+            <p>
+              <span class="cred-valor block font-display font-extrabold uppercase">{c.valor}</span>
+              <span class="mt-2 block text-[0.95rem] font-bold leading-snug md:text-base">{c.linha}</span>
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "foto foto"
+      "fala fala"
+      "anos orto"
+      "ufma cro"
+      "idades idades";
+  }
+  .b-foto {
+    grid-area: foto;
+    aspect-ratio: 1 / 1;
+  }
+  .b-fala {
+    grid-area: fala;
+  }
+  .c-anos {
+    grid-area: anos;
+  }
+  .c-orto {
+    grid-area: orto;
+  }
+  .c-ufma {
+    grid-area: ufma;
+  }
+  .c-cro {
+    grid-area: cro;
+  }
+  .c-idades {
+    grid-area: idades;
+  }
+  .cred-valor {
+    font-size: clamp(1.7rem, 1.25rem + 1.5vw, 2.5rem);
+    line-height: 0.86;
+  }
+  .cred {
+    min-height: 11.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .bento {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-areas:
+        "foto fala fala"
+        "foto anos orto"
+        "ufma cro idades";
+    }
+    .b-foto {
+      aspect-ratio: auto;
+      min-height: 26rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .bento {
+      grid-template-columns: 1.45fr 1fr 1fr 1fr;
+      grid-template-areas:
+        "foto fala fala fala"
+        "foto anos orto ufma"
+        "foto cro idades idades";
+    }
+    .b-foto {
+      min-height: 0;
+    }
+    .cred {
+      min-height: 12.5rem;
+    }
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .cred:hover :global(.chip-icon) {
+      rotate: 0deg;
+    }
+  }
+</style>

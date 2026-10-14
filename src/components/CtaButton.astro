@@ -1,0 +1,25 @@
+---
+// CTA único da página: "Agendar avaliação", abre o WhatsApp com a mensagem pronta.
+import Icon from "./Icon.astro";
+import { WHATSAPP_URL, CTA_LABEL } from "../config/site";
+
+interface Props {
+  class?: string;
+  size?: "md" | "lg";
+  id?: string;
+}
+const { class: className = "", size = "md", id } = Astro.props;
+---
+
+<a
+  id={id}
+  href={WHATSAPP_URL}
+  target="_blank"
+  rel="noopener"
+  class:list={["btn", size === "lg" && "btn-lg", className]}
+  aria-label={`${CTA_LABEL} pelo WhatsApp (abre em nova aba)`}
+  data-cta
+>
+  <Icon name="whatsapp" class={size === "lg" ? "size-6" : "size-5"} />
+  <span>{CTA_LABEL}</span>
+</a>

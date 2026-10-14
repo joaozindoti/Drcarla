@@ -1,0 +1,55 @@
+---
+import Icon from "./Icon.astro";
+import type { IconName } from "../config/icons";
+
+const momentos: { titulo: string; texto: string; icon: IconName; cor: string; r: number }[] = [
+  {
+    titulo: "Conversa e avaliação",
+    texto: "Você conta o que incomoda e o que gostaria de mudar. Depois, avalio dentes, gengiva e mordida com calma.",
+    icon: "chats",
+    cor: "paper",
+    r: -7,
+  },
+  {
+    titulo: "Plano explicado com calma",
+    texto: "Mostro o que encontrei, os caminhos possíveis e o tempo de cada um, antes de qualquer decisão.",
+    icon: "clipboard",
+    cor: "lavender",
+    r: 6,
+  },
+  {
+    titulo: "Tratamento no seu ritmo",
+    texto: "Começamos quando fizer sentido para você, com cada etapa combinada antes.",
+    icon: "calendarCheck",
+    cor: "sun",
+    r: -5,
+  },
+];
+---
+
+<section id="primeira-consulta" class="band bg-sky" aria-labelledby="consulta-titulo">
+  <div class="wrap">
+    <h2 id="consulta-titulo" class="h-section max-w-[12ch] md:max-w-none">Como é a primeira consulta</h2>
+
+    <ol class="mt-8 grid gap-3.5 md:mt-10 md:grid-cols-3 md:gap-4">
+      {
+        momentos.map((m, i) => (
+          <li class="card relative flex flex-col gap-6 p-5 md:p-6" style={`background:var(--soft-${m.cor})`}>
+            <div class="flex items-center justify-between">
+              <span class="chip-icon" style={`--r:${m.r}deg`}>
+                <Icon name={m.icon} class="size-6" />
+              </span>
+              {i < momentos.length - 1 && (
+                <Icon name="arrowRight" class="hidden size-6 md:block" />
+              )}
+            </div>
+            <div>
+              <h3 class="text-[1.4rem] leading-tight tracking-[-0.02em] md:text-[1.55rem]">{m.titulo}</h3>
+              <p class="mt-2.5 text-ink-soft">{m.texto}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

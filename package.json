@@ -1,0 +1,35 @@
+{
+  "name": "dra-carla-furtado",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Landing page da Dra. Carla Furtado, Odontologia Especializada (Santa Inês-MA)",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "images": "node scripts/prepare-images.mjs",
+    "fonts": "python scripts/fontes.py"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource-variable/onest": "^5.3.1",
+    "@phosphor-icons/core": "^2.1.1",
+    "astro": "^5.18.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^24.19.2",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3",
+    "vite": "^6.4.1"
+  },
+  "overrides": {
+    "sharp": "$sharp",
+    "vite": "$vite"
+  }
+}

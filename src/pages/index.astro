@@ -1,0 +1,36 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import Sobre from "../components/Sobre.astro";
+import Transformacoes from "../components/Transformacoes.astro";
+import Especialidades from "../components/Especialidades.astro";
+import PrimeiraConsulta from "../components/PrimeiraConsulta.astro";
+import Avaliacoes from "../components/Avaliacoes.astro";
+import Contato from "../components/Contato.astro";
+import Rodape from "../components/Rodape.astro";
+import CtaFlutuante from "../components/CtaFlutuante.astro";
+
+const title = "Dra. Carla Furtado | Dentista em Santa Inês-MA, ortodontia e facetas em resina";
+const description =
+  "Cirurgiã-dentista em Santa Inês-MA (CRO-MA 5824), pós-graduada em Ortodontia. Aparelho, facetas em resina, pré-natal odontológico e clínica geral. Agende sua avaliação pelo WhatsApp.";
+---
+
+<Base title={title} description={description}>
+  <Nav />
+  <main id="conteudo">
+    <Hero />
+    <Sobre />
+    <Transformacoes />
+    <Especialidades />
+    <PrimeiraConsulta />
+    <Avaliacoes />
+    <Contato />
+  </main>
+  <Rodape />
+  <CtaFlutuante />
+</Base>
+
+<script>
+  import "../scripts/main";
+</script>

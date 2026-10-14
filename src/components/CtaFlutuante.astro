@@ -1,0 +1,42 @@
+---
+// Botão flutuante só no celular (pílula preta): aparece depois que o hero sai da tela e some sobre o
+// comparador, a chamada final (#contato) e o rodapé. Ver src/scripts/cta-float.ts.
+import Icon from "./Icon.astro";
+import { WHATSAPP_URL, CTA_LABEL } from "../config/site";
+---
+
+<div class="cta-float pointer-events-none fixed inset-x-0 z-40 flex justify-center lg:hidden" data-cta-float aria-hidden="true">
+  <a
+    href={WHATSAPP_URL}
+    target="_blank"
+    rel="noopener"
+    class="btn pointer-events-auto min-h-14 px-6 text-[1rem]"
+    tabindex="-1"
+    aria-label={`${CTA_LABEL} pelo WhatsApp (abre em nova aba)`}
+  >
+    <Icon name="whatsapp" class="size-[1.35rem]" />
+    <span>{CTA_LABEL}</span>
+  </a>
+</div>
+
+<style>
+  .cta-float {
+    bottom: calc(1rem + env(safe-area-inset-bottom));
+    opacity: 0;
+    transform: translateY(1.25rem);
+    transition:
+      opacity 0.3s var(--ease-out-soft),
+      transform 0.4s var(--ease-out-soft);
+  }
+  /* Fio branco por fora para o botão preto não sumir sobre fotos escuras. */
+  .cta-float a {
+    box-shadow: 0 0 0 2px var(--color-paper);
+  }
+  .cta-float[data-visible] {
+    opacity: 1;
+    transform: none;
+  }
+  .cta-float:not([data-visible]) a {
+    pointer-events: none;
+  }
+</style>

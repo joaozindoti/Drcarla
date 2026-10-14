@@ -1,0 +1,142 @@
+---
+import Icon from "./Icon.astro";
+import Sticker from "./Sticker.astro";
+import { SITE } from "../config/site";
+import { AVALIACOES } from "../data/avaliacoes";
+
+const cores = ["sky", "lavender", "paper", "mint", "sun"];
+---
+
+<section id="avaliacoes" class="band overflow-hidden bg-paper" aria-labelledby="aval-titulo">
+  <div class="wrap flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
+    <div class="flex items-center gap-6 md:gap-8">
+      <h2 id="aval-titulo" class="h-section max-w-[9ch] md:max-w-none">Avaliações no Google</h2>
+      <Sticker
+        color="sun"
+        size={7.25}
+        rotate={7}
+        class="shrink-0 flex-col max-md:hidden"
+        label={`Nota ${SITE.google.nota} de 5, com ${SITE.google.total} avaliações`}
+      >
+        <span class="font-display text-[3rem] leading-[0.8] font-extrabold">{SITE.google.nota}</span>
+        <span class="mt-1.5 flex gap-[1px]">
+          {Array.from({ length: 5 }).map(() => <Icon name="star" class="size-3" />)}
+        </span>
+        <span class="mt-1 text-[0.8rem] font-bold">{SITE.google.total} avaliações</span>
+      </Sticker>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-2.5">
+      <!-- No celular a nota vira pílula ao lado do link (o adesivo grande não cabe ao lado do título) -->
+      <span class="inline-flex min-h-12 items-center gap-2 rounded-full border border-line bg-sun px-4 font-bold md:hidden">
+        <Icon name="star" class="size-4" />
+        {SITE.google.nota} · {SITE.google.total} avaliações
+      </span>
+      <a href={SITE.google.perfilUrl} target="_blank" rel="noopener" class="btn-line">
+        Ver no Google
+        <Icon name="arrowUpRight" class="size-[1.05rem]" />
+        <span class="sr-only">(abre em nova aba)</span>
+      </a>
+      <button type="button" class="btn-line px-4!" aria-pressed="false" data-marquee-toggle>
+        <Icon name="pause" class="mq-ico-pause size-[1.05rem]" />
+        <Icon name="play" class="mq-ico-play hidden size-[1.05rem]" />
+        <span data-marquee-label>Pausar</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Fileira em loop infinito (CSS). A segunda cópia é só visual: escondida de leitor de tela e do Tab. -->
+  <div class="marquee mt-8 md:mt-10" data-marquee>
+    <div class="marquee-track">
+      {
+        [0, 1].map((copia) => (
+          <ul class="marquee-group" aria-hidden={copia === 1 ? "true" : undefined} inert={copia === 1 ? true : undefined}>
+            {AVALIACOES.map((a, i) => (
+              <li class="aval card flex flex-col justify-between gap-5 p-5" style={`background:var(--soft-${cores[i % cores.length]})`}>
+                <figure>
+                  <span class="flex gap-0.5" aria-hidden="true">
+                    {Array.from({ length: 5 }).map(() => <Icon name="star" class="size-4" />)}
+                  </span>
+                  <blockquote class="mt-3">
+                    <p class="aval-texto">“{a.curto ?? a.texto}”</p>
+                  </blockquote>
+                  <figcaption class="mt-4 text-[0.92rem]">
+                    {a.nome ? (
+                      <><b>{a.nome}</b>, no Google</>
+                    ) : (
+                      <b>Trecho destacado pelo Google</b>
+                    )}
+                  </figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .marquee {
+    overflow: hidden;
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 48s linear infinite;
+  }
+  .marquee-group {
+    display: flex;
+    gap: 1rem;
+    padding-right: 1rem;
+  }
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track,
+  .marquee[data-paused] .marquee-track {
+    animation-play-state: paused;
+  }
+  .aval {
+    width: 18.5rem;
+  }
+  .aval-texto {
+    font-size: 0.98rem;
+    line-height: 1.45;
+
+  }
+  @media (min-width: 768px) {
+    .aval {
+      width: 22rem;
+    }
+    .aval-texto {
+      font-size: 1.02rem;
+    }
+  }
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Reduzir movimento: a fileira para e vira rolagem lateral normal (a cópia some). */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee {
+      overflow-x: auto;
+      padding-inline: var(--edge);
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+    .marquee-track {
+      animation: none !important;
+    }
+    .marquee-group + .marquee-group {
+      display: none;
+    }
+    .aval {
+      scroll-snap-align: start;
+    }
+    [data-marquee-toggle] {
+      display: none;
+    }
+  }
+</style>

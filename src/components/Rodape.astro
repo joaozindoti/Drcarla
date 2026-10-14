@@ -1,0 +1,85 @@
+---
+import Selo from "./Selo.astro";
+import Icon from "./Icon.astro";
+import { SITE, WHATSAPP_URL } from "../config/site";
+
+const ano = new Date().getFullYear();
+---
+
+<footer class="overflow-hidden bg-ink pt-12 pb-28 text-paper md:pt-14 md:pb-8" aria-labelledby="rodape-titulo">
+  <h2 id="rodape-titulo" class="sr-only">Contato e informações profissionais</h2>
+  <div class="wrap">
+    <div class="grid grid-cols-2 gap-x-6 gap-y-8 text-[0.95rem] lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:gap-10">
+      <div class="col-span-2 flex items-start gap-4 lg:col-span-1">
+        <Selo invert />
+        <p class="max-w-[19rem]">
+          <b>{SITE.nome}</b>, {SITE.profissao.toLowerCase()}, <span class="whitespace-nowrap">{SITE.cro}</span>. {SITE.formacao}.
+        </p>
+      </div>
+      <div>
+        <p class="font-bold">Endereço</p>
+        <p class="mt-2 text-[#c9c9c9]">
+          {SITE.endereco.rua}<br />{SITE.endereco.bairro}, {SITE.endereco.cidade}-{SITE.endereco.uf}<br />CEP {SITE.endereco.cep}
+        </p>
+      </div>
+      <div>
+        <p class="font-bold">Horário</p>
+        {SITE.horario.map((h) => <p class="mt-2 text-[#c9c9c9]">{h.dias}: {h.horas}</p>)}
+      </div>
+      <div class="col-span-2 sm:col-span-1">
+        <p class="font-bold">Contato</p>
+        <ul class="mt-1">
+          <li>
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener" class="foot-link">
+              <Icon name="whatsapp" class="size-5" />
+              {SITE.telefoneExibicao}
+              <span class="sr-only">(WhatsApp, abre em nova aba)</span>
+            </a>
+          </li>
+          <li>
+            <a href={SITE.instagramUrl} target="_blank" rel="noopener" class="foot-link">
+              <Icon name="instagram" class="size-5" />
+              {SITE.instagramUser}
+              <span class="sr-only">(Instagram, abre em nova aba)</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="foot-mark display mt-10 text-sky md:mt-12" aria-hidden="true">Carla Furtado</p>
+
+    <div class="mt-5 flex flex-col gap-1 text-[0.85rem] text-[#c9c9c9] sm:flex-row sm:justify-between">
+      <p>&copy; <span data-ano>{ano}</span> {SITE.marca}</p>
+      <p>Responsável técnica: {SITE.nome}, {SITE.cro}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* Assinatura em display ocupando a largura da coluna ("CARLA FURTADO" mede ~4,9em). */
+  .wrap {
+    container-type: inline-size;
+  }
+  .foot-mark {
+    font-size: 20.2cqi;
+    line-height: 0.78;
+    white-space: nowrap;
+    margin-left: -0.02em;
+  }
+  .foot-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 2.75rem;
+    text-underline-offset: 4px;
+  }
+  @media (hover: hover) {
+    .foot-link:hover {
+      text-decoration: underline;
+    }
+  }
+  :focus-visible {
+    outline-color: var(--color-paper);
+  }
+</style>

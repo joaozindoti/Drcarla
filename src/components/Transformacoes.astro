@@ -1,0 +1,226 @@
+---
+import { Picture } from "astro:assets";
+import Icon from "./Icon.astro";
+import CtaButton from "./CtaButton.astro";
+import Sticker from "./Sticker.astro";
+import { CASOS } from "../data/casos";
+
+const sizes = "(min-width: 1440px) 58rem, (min-width: 1024px) 64vw, calc(100vw - 2rem)";
+const widths = [480, 720, 960, 1200];
+const thumbSizes = "(min-width: 1024px) 16rem, 13rem";
+---
+
+<section id="transformacoes" class="band bg-mist" aria-labelledby="transf-titulo">
+  <div class="wrap">
+    <h2 id="transf-titulo" class="h-section">Antes e depois</h2>
+    <p class="mt-4 max-w-[34rem] md:mt-5">
+      Casos reais da Dra. Carla, publicados com autorização. Arraste a linha para comparar.
+    </p>
+  </div>
+
+  <figure class="mt-8 flex flex-col gap-3.5 md:mt-10 md:gap-4 lg:block" data-casos>
+    <div class="wrap max-lg:contents lg:grid lg:grid-cols-12 lg:gap-4">
+      <!-- Comparador -->
+      <div class="cmp-card relative order-1 overflow-hidden border border-line bg-paper max-lg:mx-[var(--gutter)] lg:col-span-8">
+        <div
+          class="cmp relative aspect-[3/2] w-full cursor-ew-resize touch-pan-y select-none overflow-hidden"
+          data-compare
+          style="--pos: 50%"
+        >
+          {
+            CASOS.map((caso, i) => (
+              <div class="cmp-layer absolute inset-0" data-layer={caso.id} hidden={i > 0} data-active={i === 0 ? "" : undefined}>
+                <Picture
+                  src={caso.depois}
+                  formats={["avif", "webp"]}
+                  widths={widths}
+                  sizes={sizes}
+                  alt={`Comparação de antes e depois. ${caso.altAntes}. ${caso.altDepois}.`}
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false"
+                  class="absolute inset-0 h-full w-full object-cover"
+                />
+                <div class="cmp-before absolute inset-0">
+                  <Picture
+                    src={caso.antes}
+                    formats={["avif", "webp"]}
+                    widths={widths}
+                    sizes={sizes}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                    class="absolute inset-0 h-full w-full object-cover"
+                  />
+                </div>
+              </div>
+            ))
+          }
+
+          <span class="cmp-tag left-3 md:left-4" aria-hidden="true">Antes</span>
+          <span class="cmp-tag right-3 md:right-4" aria-hidden="true">Depois</span>
+
+          <div class="cmp-handle pointer-events-none absolute inset-y-0">
+            <span class="cmp-line absolute inset-y-0 left-1/2 -translate-x-1/2"></span>
+            <span
+              class="cmp-knob pointer-events-auto absolute top-1/2 left-1/2 grid size-14 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-line bg-sun"
+              role="slider"
+              tabindex="0"
+              aria-label="Comparar antes e depois. Use as setas para mover."
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="50"
+              aria-valuetext="50% da imagem mostra o antes"
+              aria-orientation="horizontal"
+              data-knob
+            >
+              <Icon name="arrowsLeftRight" class="size-6" />
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legenda do caso + chamada -->
+      <div class="card relative order-3 flex flex-col justify-between gap-8 bg-sky p-6 max-lg:mx-[var(--gutter)] max-lg:mt-3 md:p-7 lg:col-span-4">
+        <Sticker icon="sparkle" color="lavender" shape="circle" size={3.6} rotate={-12} class="absolute -top-3 right-5 md:right-7" />
+        <figcaption>
+          <span class="block" aria-live="polite">
+            <span class="cmp-titulo display block pr-14" data-titulo>{CASOS[0].rotulo}</span>
+            <span class="mt-4 block text-[1.1rem] font-bold leading-snug md:text-[1.2rem]" data-legenda>{CASOS[0].legenda}</span>
+          </span>
+          <span class="mt-2 block text-ink-soft">
+            Cada caso é planejado na avaliação, e o resultado varia de pessoa para pessoa.
+          </span>
+        </figcaption>
+        <div>
+          <p class="mb-4 max-w-[22rem] text-[1.05rem] font-bold leading-snug">Quer saber o que dá para fazer no seu sorriso? Comece pela avaliação.</p>
+          <CtaButton />
+        </div>
+      </div>
+    </div>
+
+    <!-- Seletor de casos: cards numa fileira (vaza para o lado no celular) -->
+    {
+      CASOS.length > 1 && (
+        <div class="casos rail order-2 py-1 lg:mt-4 lg:grid lg:grid-cols-5 lg:overflow-visible" role="group" aria-label="Escolher caso">
+          {CASOS.map((caso, i) => (
+            <button
+              type="button"
+              class="caso-card card w-[11.25rem] bg-paper p-2 text-left md:w-[13rem] lg:w-auto"
+              aria-pressed={i === 0 ? "true" : "false"}
+              data-caso={caso.id}
+              data-legenda={caso.legenda}
+              data-titulo={caso.rotulo}
+            >
+              <span class="block overflow-hidden rounded-[20px] border border-line">
+                <Picture
+                  src={caso.depois}
+                  formats={["avif", "webp"]}
+                  widths={[320, 480]}
+                  sizes={thumbSizes}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  class="aspect-[3/2] w-full object-cover"
+                />
+              </span>
+              <span class="flex min-h-11 items-center justify-between gap-2 px-2 pt-2 pb-1">
+                <span class="font-bold">{caso.rotulo}</span>
+                <span class="caso-dot grid size-7 place-items-center rounded-full border border-line" aria-hidden="true">
+                  <Icon name="arrowUpRight" class="size-3.5" />
+                </span>
+              </span>
+            </button>
+          ))}
+        </div>
+      )
+    }
+  </figure>
+</section>
+
+<style>
+  .cmp-card {
+    border-radius: var(--radius-media);
+  }
+  .cmp-titulo {
+    font-size: clamp(2.4rem, 1.8rem + 2vw, 3.6rem);
+    line-height: 0.84;
+  }
+  .cmp-before {
+    clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+  }
+  .cmp-layer {
+    transition: opacity 0.45s var(--ease-out-soft);
+  }
+  .cmp-layer.is-entering {
+    opacity: 0;
+  }
+  .cmp-tag {
+    position: absolute;
+    top: 0.75rem;
+    z-index: 1;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper);
+    font-size: 0.85rem;
+    font-weight: 700;
+    pointer-events: none;
+  }
+  @media (min-width: 768px) {
+    .cmp-tag {
+      top: 1rem;
+    }
+  }
+  .cmp-handle {
+    left: var(--pos);
+    width: 0;
+    z-index: 2;
+  }
+  .cmp-line {
+    width: 3px;
+    background: var(--color-paper);
+    border-inline: 1px solid rgb(0 0 0 / 0.18);
+  }
+  .cmp-knob {
+    transition: scale 0.25s var(--ease-out-soft);
+  }
+  .cmp.is-dragging .cmp-knob {
+    scale: 0.92;
+  }
+  .cmp-knob:focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 4px;
+  }
+  .cmp :global(img) {
+    -webkit-user-drag: none;
+    pointer-events: none;
+  }
+
+  .caso-card {
+    transition:
+      background-color 0.2s,
+      transform 0.2s var(--ease-out-soft);
+  }
+  .caso-card[aria-pressed="true"] {
+    background: var(--color-sun);
+    outline: 2px solid var(--color-ink);
+    outline-offset: -2px;
+  }
+  .caso-card[aria-pressed="true"] .caso-dot {
+    background: var(--color-ink);
+    color: var(--color-sun);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .caso-card:hover {
+      transform: translateY(-3px);
+    }
+  }
+  @media (min-width: 1024px) {
+    .casos {
+      gap: 1rem;
+      padding-inline: var(--edge);
+    }
+  }
+</style>

@@ -1,0 +1,105 @@
+---
+import Icon from "./Icon.astro";
+import type { IconName } from "../config/icons";
+
+// Procedimentos do material da Dra. Carla (design/BRIEF.md). Uma linha de benefício cada, sem promessa
+// de resultado (regras do CFO).
+const itens: { nome: string; linha: string; icon: IconName }[] = [
+  { nome: "Ortodontia", linha: "Aparelho para alinhar os dentes e ajustar a mordida, com acompanhamento de perto.", icon: "smiley" },
+  { nome: "Facetas em resina", linha: "Corrige forma, cor e pequenos espaços entre os dentes com resina composta.", icon: "sparkle" },
+  { nome: "Pré-natal odontológico", linha: "Atendimento a gestantes, com cuidado redobrado nessa fase.", icon: "baby" },
+  { nome: "Clareamento", linha: "Dentes mais claros, com acompanhamento profissional do começo ao fim.", icon: "sun" },
+  { nome: "Tratamento de canal", linha: "Trata a parte interna do dente para conservar o dente natural.", icon: "tooth" },
+  { nome: "Implante", linha: "Repõe o dente perdido com uma base fixa no osso.", icon: "anchor" },
+  { nome: "Prótese", linha: "Devolve a mastigação e o sorriso a quem perdeu dentes.", icon: "puzzle" },
+  { nome: "Limpeza e raspagem", linha: "Remove placa e tártaro e cuida da saúde da gengiva.", icon: "drop" },
+  { nome: "Restauração", linha: "Reconstrói o dente com material na cor do seu sorriso.", icon: "paintBrush" },
+  { nome: "Extração", linha: "Remoção do dente quando é a indicação certa para o seu caso.", icon: "firstAid" },
+  { nome: "Clínico geral", linha: "Consultas de rotina e prevenção para adultos e crianças.", icon: "stethoscope" },
+];
+const cores = ["lavender", "sun", "mint", "sky", "ember", "violet", "mist"];
+const giros = [-7, 5, -4, 8, -6, 4, -8];
+---
+
+<section id="especialidades" class="band bg-paper" aria-labelledby="esp-titulo">
+  <div class="wrap flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
+    <div>
+      <h2 id="esp-titulo" class="h-section">Especialidades</h2>
+      <p class="mt-4 max-w-[30rem] md:mt-5">Do aparelho à limpeza de rotina, tudo no mesmo consultório.</p>
+    </div>
+    <div class="hidden gap-2 md:flex" data-rail-nav>
+      <button type="button" class="rail-btn" aria-label="Especialidades anteriores" data-rail-prev>
+        <Icon name="arrowLeft" class="size-5" />
+      </button>
+      <button type="button" class="rail-btn" aria-label="Próximas especialidades" data-rail-next>
+        <Icon name="arrowRight" class="size-5" />
+      </button>
+    </div>
+  </div>
+
+  <ul class="rail mt-8 py-1 md:mt-10" aria-label="Especialidades" data-rail tabindex="0">
+    {
+      itens.map((it, i) => {
+        const cor = cores[i % cores.length];
+        return (
+          <li
+            class="esp-card card flex w-[16.5rem] flex-col justify-between gap-10 p-5 md:w-[18.5rem] md:p-6"
+            style={`background:var(--soft-${cor})`}
+          >
+            <span class="chip-icon size-14" style={`--r:${giros[i % giros.length]}deg`}>
+              <Icon name={it.icon} class="size-7" />
+            </span>
+            <div>
+              <h3 class="esp-nome font-display font-extrabold uppercase">{it.nome}</h3>
+              <p class="mt-3 text-[0.95rem] leading-snug md:text-base">{it.linha}</p>
+            </div>
+          </li>
+        );
+      })
+    }
+  </ul>
+</section>
+
+<style>
+  .esp-card {
+    min-height: 18rem;
+  }
+  @media (min-width: 768px) {
+    .esp-card {
+      min-height: 23rem;
+    }
+  }
+  .esp-nome {
+    font-size: clamp(1.85rem, 1.6rem + 0.8vw, 2.25rem);
+    line-height: 0.88;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .esp-card:hover :global(.chip-icon) {
+      rotate: 0deg;
+    }
+  }
+  .rail:focus-visible {
+    outline-offset: -4px;
+  }
+  .rail-btn {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper);
+    transition:
+      background-color 0.2s,
+      opacity 0.2s;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .rail-btn:not(:disabled):hover {
+      background: var(--color-sun);
+    }
+  }
+  .rail-btn:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+</style>

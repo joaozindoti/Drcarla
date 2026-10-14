@@ -1,0 +1,40 @@
+---
+// Adesivo decorativo: forma chapada com contorno preto de 1px e borda branca de recorte (como adesivo de
+// papel cortado à mão), girada. Sempre decorativo (aria-hidden); quem carrega informação passa `label`.
+import Icon from "./Icon.astro";
+import type { IconName } from "../config/icons";
+
+interface Props {
+  icon?: IconName;
+  color: "sun" | "mint" | "lavender" | "ember" | "violet" | "sky" | "paper" | "electric";
+  shape?: "circle" | "square";
+  /** Lado em rem. */
+  size?: number;
+  rotate?: number;
+  class?: string;
+  style?: string;
+  label?: string;
+}
+const { icon, color, shape = "square", size = 4.5, rotate = 0, class: className = "", style = "", label } = Astro.props;
+const fg = color === "violet" ? "var(--color-paper)" : "var(--color-ink)";
+---
+
+<span
+  class:list={["sticker sticker-cut", className]}
+  style={`--r:${rotate}deg;width:${size}rem;height:${size}rem;background:var(--color-${color});color:${fg};border-radius:${shape === "circle" ? "999px" : "var(--radius-sticker)"};${style}`}
+  aria-hidden={label ? undefined : "true"}
+  role={label ? "img" : undefined}
+  aria-label={label}
+>
+  {icon && <Icon name={icon} class="size-[46%]" />}
+  <slot />
+</span>
+
+<style>
+  /* Borda branca de recorte + fio preto por fora: é traço, não sombra (sem desfoque, sem deslocamento). */
+  .sticker-cut {
+    box-shadow:
+      0 0 0 4px var(--color-paper),
+      0 0 0 5px var(--color-ink);
+  }
+</style>

@@ -1,0 +1,25 @@
+# dependências e build
+node_modules/
+dist/
+.astro/
+.vercel/
+
+# ambiente
+.env
+.env.*
+!.env.example
+
+# sistema / editor
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+
+# material bruto do cliente (fotos de pacientes, vídeo original): repo é público,
+# os recortes otimizados que o site usa ficam em src/assets e public/
+assets-originais/
+
+# artefatos de teste local
+.playwright-mcp/
+.lighthouseci/
+

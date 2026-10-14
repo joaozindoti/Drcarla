@@ -1,0 +1,16 @@
+---
+import { ICONS, type IconName } from "../config/icons";
+
+interface Props {
+  name: IconName;
+  class?: string;
+  label?: string;
+}
+
+const { name, class: className = "size-5", label } = Astro.props;
+// Injeta classe e acessibilidade no <svg> do Phosphor.
+const a11y = label ? `role="img" aria-label="${label}"` : `aria-hidden="true" focusable="false"`;
+const svg = ICONS[name].replace("<svg ", `<svg class="${className}" ${a11y} `);
+---
+
+<Fragment set:html={svg} />
