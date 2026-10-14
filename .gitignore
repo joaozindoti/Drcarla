@@ -23,3 +23,6 @@ assets-originais/
 .playwright-mcp/
 .lighthouseci/
 
+
+.vercel
+.env*

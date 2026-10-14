@@ -8,7 +8,9 @@ import sitemap from "@astrojs/sitemap";
 // 2) senão, o domínio de produção que a Vercel injeta no build;
 // 3) senão, localhost (build local). Nesse caso não gera sitemap.
 const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL;
-const publicUrl = process.env.SITE_URL || (vercel ? `https://${vercel}` : "");
+// trim + tira BOM: valor colado em painel/terminal às vezes vem com quebra de linha e o Astro recusa a URL.
+const siteEnv = (process.env.SITE_URL || "").replace(/^﻿/, "").trim();
+const publicUrl = siteEnv || (vercel ? `https://${vercel}` : "");
 const site = publicUrl || "http://localhost:4321";
 
 export default defineConfig({
